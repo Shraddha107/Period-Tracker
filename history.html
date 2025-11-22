@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SheSyncs - History Dashboard</title>
+  <link rel="stylesheet" href="css/shared.css" />
+
+  <style>
+    main {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 0 24px;
+      flex: 1;
+    }
+    h1, h2 {
+      color: #822e2e;
+      font-family: 'Nunito', sans-serif;
+    }
+    h1 {
+      font-size: 2.4rem;
+      margin-bottom: 1.1em;
+      margin-top: -6%;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+    h2 {
+      margin-top: 1.1em;
+      margin-bottom: 1.1em;
+      text-align: center;
+    }
+    h2.dashboard-title {
+      font-size: 2rem;
+      align-items: center;
+      margin-bottom: 1.1em;
+    }
+    .user-info {
+      background: #ffeef4;
+      border-left: 5px solid #880e4f82;
+      padding: 20px 24px;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 12px rgba(108, 52, 131, 0.1);
+      margin-top: 4%;
+    }
+    .user-info p strong {
+      color: #822e2ed6;
+    }
+    .predictions-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      font-size: 1rem;
+      color: #4b2563;
+      box-shadow: 0 10px 8px rgba(131, 52, 80, 0.556);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .predictions-table thead {
+      background-color: #8f114386;
+      color: white;
+    }
+    .predictions-table th, .predictions-table td {
+      padding: 12px 15px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    .predictions-table tbody tr:nth-child(even) {
+      background-color: #f7f1ff;
+    }
+    .next-prediction {
+      background: #961b4c8c;
+      color: white;
+      font-size: 1.2rem;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(221, 103, 168, 0.173);
+      margin-top: 6%;
+      margin-bottom: 4%;
+    }
+    .btn-small {
+      display: inline-block;
+      background-color: #dd6767fc;
+      color: white;
+      border: none;
+      padding: 19px 39px;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      font-weight: 550;
+      text-align: center;
+      margin: 0 12px;
+      cursor: pointer;
+      box-shadow: 0 3px 6px #6d4c4196;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .btn-small:hover {
+      background-color: #f08080;
+    }
+    .btn-container {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 0px;
+    }
+    .no-data {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 1.3em;
+      color: #b4465a;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-placeholder"></div>
+
+  <main>
+    <h1>Welcome Back, <span id="userName">Friend</span></h1>
+
+    <section class="user-info" id="userInfo">
+      <!-- User cycle info injected here -->
+    </section>
+
+    <section>
+      <h2>Your Cycle Predictions</h2>
+      <table id="predictionsTable" class="predictions-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Predicted Period Start</th>
+            <th>Ovulation Date</th>
+            <th>Luteal Phase</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows injected by JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <div id="nextPrediction" class="next-prediction" style="display:none;">
+      <!-- Next prediction highlight -->
+    </div>
+
+    <div class="btn-container">
+      <button class="btn-small" id="calendarBtn" title="View your calendar with predictions">See Calendar</button>
+    </div>
+  </main>
+
+  <div class="footer-placeholder"></div>
+
+  <script>
+    const userName = localStorage.getItem('userName') || "Friend";
+    const userPhone = localStorage.getItem('userPhone') || ""; // make sure you set this somewhere!
+    const userNameEl = document.getElementById('userName');
+    const userInfoEl = document.getElementById('userInfo');
+    const predictionsTableBody = document.querySelector('#predictionsTable tbody');
+    const nextPredictionEl = document.getElementById('nextPrediction');
+    const calendarBtn = document.getElementById('calendarBtn');
+
+    userNameEl.textContent = userName;
+
+    async function fetchPredictions() {
+      if (!userPhone) {
+        userInfoEl.innerHTML = '<p class="no-data">No phone number found. Please log in or start tracking.</p>';
+        predictionsTableBody.innerHTML = '';
+        nextPredictionEl.style.display = 'none';
+        return;
+      }
+      try {
+        const res = await fetch(`http://localhost:8000/history/${encodeURIComponent(userPhone)}`);
+        if (!res.ok) throw new Error('Failed to fetch predictions');
+        const predictions = await res.json();
+        renderDashboard(predictions);
+      } catch (err) {
+        console.error(err);
+        userInfoEl.innerHTML = '';
+        predictionsTableBody.innerHTML = '<tr><td colspan="4" class="no-data">Failed to load predictions. Try tracking your cycle first!</td></tr>';
+        nextPredictionEl.style.display = 'none';
+      }
+    }
+
+    function renderDashboard(predictions) {
+      if (!Array.isArray(predictions) || !predictions.length) {
+        userInfoEl.innerHTML = '';
+        predictionsTableBody.innerHTML = '<tr><td colspan="4" class="no-data">No prediction data found. Go track your cycle first!</td></tr>';
+        nextPredictionEl.style.display = 'none';
+        return;
+      }
+
+      const firstPrediction = predictions[0];
+
+      userInfoEl.innerHTML = `
+        <p><strong>Name:</strong> ${userName}</p>
+        <p><strong>Cycle Start Date:</strong> ${firstPrediction.period_start ? new Date(firstPrediction.period_start).toLocaleDateString() : 'N/A'}</p>
+        <p><strong>Cycle Type:</strong> ${firstPrediction.cycle_type || 'Not specified'}</p>
+        <p><strong>Period Duration:</strong> ${firstPrediction.period_duration || 'Not specified'} days</p>
+      `;
+
+      const showPredictions = predictions.slice(0, 12);
+
+      predictionsTableBody.innerHTML = showPredictions.map((pred, idx) => {
+        const lutealStart = pred.luteal_phase_start ? new Date(pred.luteal_phase_start).toLocaleDateString() : 'N/A';
+        const lutealEnd = pred.luteal_phase_end ? new Date(pred.luteal_phase_end).toLocaleDateString() : 'N/A';
+        const predictedStart = pred.predicted_start_date ? new Date(pred.predicted_start_date).toLocaleDateString() : 'N/A';
+        const ovulationDate = pred.ovulation_date ? new Date(pred.ovulation_date).toLocaleDateString() : 'N/A';
+
+        return `
+          <tr>
+            <td>${idx + 1}</td>
+            <td>${predictedStart}</td>
+            <td>${ovulationDate}</td>
+            <td>${lutealStart} - ${lutealEnd}</td>
+          </tr>
+        `;
+      }).join('');
+
+      const today = new Date();
+      const upcomingPrediction = predictions.find(p => {
+        const startDate = new Date(p.predicted_start_date);
+        return startDate >= today && !isNaN(startDate);
+      });
+
+      if (upcomingPrediction) {
+        nextPredictionEl.style.display = 'block';
+        nextPredictionEl.innerHTML = `
+          Next Period Starts On: <strong>${new Date(upcomingPrediction.predicted_start_date).toLocaleDateString()}</strong><br/>
+          Current Phase: <strong>${upcomingPrediction.current_phase || 'N/A'}</strong>
+        `;
+      } else {
+        nextPredictionEl.style.display = 'none';
+      }
+    }
+
+    calendarBtn.addEventListener('click', () => {
+      window.location.href = 'calendar.html';
+    });
+
+    // Kick off fetching on page load
+    fetchPredictions();
+  </script>
+
+  <script src="header_footer.js"></script>
+</body>
+</html>

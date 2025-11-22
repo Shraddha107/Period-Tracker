@@ -1,0 +1,276 @@
+/* Import Nunito font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+/* Make main content grow to push footer down */
+/* Sticky footer layout */
+/* Ensure full height doesn't block scrolling */
+html, body {
+  height: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Reset */
+* {
+  margin: 3px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #fcd6d6, #f49d9dd4);
+
+  color: #2d2d2d;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+header {
+  position: relative;
+  background-color: transparent;  
+  padding: 32px 0;
+  width: 100vw;
+  min-height: 80px;
+  z-index: 5;
+  transition: background-color 0.4s ease, box-shadow 0.3s ease, border 0.3s ease;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  opacity: 0;
+  transform: none; 
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+header.hovered::before {
+  background: #f5c2c2;
+  border: 15px solid #f5c2c2;
+  box-shadow: 0 0 12px 3px rgba(200, 50, 50, 0.25);
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+
+
+
+footer {
+  background: #f0acacb3;
+  padding: 21px 0;
+  border: 15px solid #f0acac63;
+  box-sizing: border-box;
+  width: 100vw;
+  position: relative;
+  box-shadow: 0 0 8px 2px rgba(255, 179, 179, 0.5);
+}
+
+/* Clean up pseudo-elements */
+header::after,
+footer::before {
+  content: none;
+}
+
+/* Position container */
+.nav-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  /*border-bottom: 2px solid #d1b3ff;
+   /* your existing border */
+  height: 50px; /* fixed height so it doesn't stretch */
+  background-color: transparent; /* optional */
+  overflow: visible; /* make sure nothing is clipped */
+}
+
+/* Logo image styles */
+.logo img {
+  position: absolute;
+  top: -2px;       /* move up so it's above the border */
+  left: 70px;       /* same horizontal spacing */
+  height: 57px;     /* or any size you want */
+  width: auto;
+  z-index: 10;      /* stay above other elements */
+}
+
+/* Center content container */
+.nav-part, .footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 20;
+}
+
+/* Footer text alignment */
+.footer-content {
+  text-align: center;
+}
+
+/* Logo styles */
+.logo {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2d2d2d;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* Global link styles */
+a {
+  text-decoration: none;
+  color: #2d2d2d;
+  transition: background-color 0.3s;
+}
+
+/* Enhanced navigation links */
+nav a, .shifting a {
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  font-weight: 570;
+  font-size: 21px;
+  letter-spacing: 0.04em;
+  color: #a46c54dc;
+  padding: 10px 10px;
+  border-radius: 20px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+nav a:hover, .shifting a:hover {
+  background-color: #ede9fe8e;
+  color: #ae69698b;
+}
+
+/* Unified Button Style */
+.btn, .track-btn {
+  background-color: #dd6767fc;
+  box-shadow: 0 4px 15px rgba(200, 50, 50, 0.2);
+  color: white;
+  align-items: center;
+  padding: 14px 30px;
+  border: none;
+  border-radius: 25px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  /* box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3); */
+  transition: all 0.3s ease;
+}
+
+.btn:hover, .track-btn:hover {
+  background-color: #f08080;
+  box-shadow: 0 6px 20px rgba(200, 50, 50, 0.3);
+  transform: translateY(-2px);
+}
+
+
+
+
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 10px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+/* --- Footer Left --- */
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 14px;
+  color: #4b4453;
+  position: absolute;
+  left: 40px;
+}
+
+
+.footer-left a {
+  text-decoration: none;
+  color: #4b4453;
+  font-size: 14px;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.footer-left a:hover {
+  text-decoration: underline;
+  color: #4b4453; /* Optional: keeps the color consistent */
+}
+
+
+/* --- Footer Center --- */
+.footer-center {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #3a2d55d3;
+}
+
+/* --- Footer Right --- */
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: absolute;
+  right: 40px;
+}
+
+.footer-icon {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) saturate(100%) invert(21%) sepia(35%) saturate(1633%) hue-rotate(234deg) brightness(88%) contrast(89%);
+  transition: transform 0.2s ease;
+}
+
+.footer-icon:hover {
+  transform: scale(1.1);
+}
+
+
+
+.swal2-confirm.swal2-styled {
+  padding: 11px 30px !important;
+  font-size: large !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  background-color: #235b7c !important;
+  color: white !important;
+  box-shadow: 0 4px 10px rgba(35, 91, 124, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+
+/* Hover effect for SweetAlert OK button */
+.swal2-confirm.swal2-styled:hover {
+  background-color: #e24470ff !important;
+  transform: scale(1.05);
+}
+

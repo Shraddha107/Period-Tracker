@@ -1,0 +1,258 @@
+/* --- Page Layout Wrapper --- */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- Toggle Sections --- */
+.toggle-section {
+  display: none;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.toggle-section.active {
+  display: block;
+}
+
+.toggle-slider-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  background: #fef6f4;
+  border-radius: 50px;
+  padding: 8px;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto 25px;
+  box-shadow: inset 0 2px 8px rgba(255, 105, 180, 0.2);
+}
+
+.toggle-btn {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  flex-basis: 50%;
+  text-align: center;
+  padding: 15px 20px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  color: #dd6767;
+  transition: color 0.3s ease;
+}
+
+.toggle-btn.active {
+  color: white;
+}
+
+.toggle-slider-bg {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  right: 10px;
+  width: calc(50% - 15px);
+  height: calc(100% - 16px);
+  background: #dd6767;
+  border-radius: 50px;
+  transition: left 0.3s ease;
+  z-index: 1;
+}
+
+/* --- Main Card Containers --- */
+.survey-main,
+.myth-buster,
+.remedy-zone {
+  background-color: #ffeeeea3;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(120, 51, 72, 0.15);
+  border: 0.5px solid #ffd3e5;
+  padding: 2rem;
+  max-width: 620px;
+  margin: 0 auto 2.5rem;
+  font-family: 'Nunito', sans-serif;
+}
+.myth-buster{
+  margin-top: 1%;
+}
+.myth-card.active{
+  margin: 2%;
+}
+/* Heading */
+h2, h3 {
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  text-align: center;
+  color: #5e2d55;
+  font-size: 1.4rem;
+}
+
+/* Labels */
+label {
+  display: block;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  font-size: 16px;
+  color: #703a53;
+}
+
+/* Select Boxes */
+select {
+  margin-top: 6px;
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #552d41;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+select:focus {
+  border-color: #f65cac94;
+  box-shadow: 0 0 8px rgba(246, 92, 159, 0.4);
+  outline: none;
+}
+
+/* Button */
+.btn {
+  display: block;
+  width: 100%;
+  background-color: #dd6767fc;
+  color: white;
+  padding: 14px 0;
+  border: none;
+  border-radius: 30px;
+  font-weight: 800;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 127, 80, 0.4);
+}
+
+.btn:hover {
+  background-color: #b63c3cfc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 18px rgba(255, 90, 90, 0.5);
+}
+
+/* Suggestions Box - Enhanced */
+.suggestions-box {
+  margin-top: 1.8rem;
+  background-color: #ffeeeea3;      /* same subtle pinkish background as others */
+  border-radius: 16px;              /* consistent border radius */
+  padding: 2rem;                   /* more padding for spaciousness */
+  box-shadow: 0 4px 20px rgba(177, 156, 162, 0.11); 
+  font-family: 'Nunito', sans-serif; /* consistent font */
+  color: #552d41;                  /* harmonious text color */
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Suggestions Heading */
+.suggestions-box h3 {
+  color: #5e2d55;                  /* same heading color as others */
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* Suggestions List */
+.suggestions-box ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  color: #703a53;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* List Items */
+.suggestions-box ul li {
+  margin-bottom: 14px;
+  padding: 10px 15px;
+  border-radius: 12px;
+  background: #faebf2;  /* soft pink background */
+  box-shadow: 0 4px 8px rgba(220, 108, 146, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  cursor: default; /* since these are tips, no pointer hover unless interactive */
+}
+
+.suggestions-box ul li:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(220, 108, 146, 0.3);
+  background: #ffe0ed;
+}
+
+
+/* Myth Cards */
+.myth-carousel {
+  position: relative;
+}
+
+.myth-card {
+  display: none;
+  background: #fff0f5;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.myth-card.active {
+  display: block;
+  padding: 15px;
+}
+
+.myth-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.myth-controls button {
+  padding: 0.5rem 1.3rem;
+  background: #dd6767fc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.myth-controls button:hover {
+  background-color: #b63c3cfc;
+}
+
+/* Remedies */
+.remedy-zone ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .survey-main,
+  .myth-buster,
+  .remedy-zone {
+    margin: 15px;
+    padding: 1.5rem;
+  }
+  .btn {
+    font-size: 16px;
+  }
+}

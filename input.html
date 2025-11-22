@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Input Details</title>
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/styles-input.css" />
+  <!-- SweetAlert2 for fancy dialogs -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <!-- Nav Bar/Header-->
+ <div class="header-placeholder"></div>
+ <script  src = "header_footer.js"></script>
+
+<!-- Main Content -->
+  <main class="input-main">
+    <div class="formpart">
+      <h2>Input Your Cycle Details</h2>
+      <form id="periodForm">
+        <div class="mode-toggle">
+          <input type="radio" id="modeQuick" name="mode" value="quick" checked />
+          <label for="modeQuick" class="toggle-label">Quick Prediction</label>
+
+          <input type="radio" id="modeTrack" name="mode" value="track" />
+          <label for="modeTrack" class="toggle-label">Track & Save</label>
+
+          <div class="toggle-slider"></div>
+        </div>
+
+        <div id="nameFields" style="margin-top: 10px;">
+          <label>
+            <span>First Name</span>
+            <input type="text" id="firstName" name="first_name" />
+          </label>
+
+          <label>
+            <span>Last Name</span>
+            <input type="text" id="lastName" name="last_name" />
+          </label>
+
+          <label>
+            <span>Phone Number</span>
+            <input type="tel" id="phoneNumber" name="phone_number" />
+          </label>
+        </div>
+
+        <label>
+          <span>Last Period Start Date</span>
+          <input type="date" id="startDate" name="startDate" required>
+        </label>
+
+        <label>
+          <span>Cycle Type</span>
+          <select id="cycleType" name="cycleType" required>
+            <option value="" disabled selected>Pick your cycle type</option>
+            <option value="short">Short (21–24 days)</option>
+            <option value="normal">Normal (25–35 days)</option>
+            <option value="long">Long (35+ days)</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Period Duration (days)</span>
+          <input type="number" id="periodDuration" name="periodDuration" value="5" min="1" max="10">
+        </label>
+
+        <button type="submit" class="track-btn">Track</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer Part -->
+<div class="footer-placeholder"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

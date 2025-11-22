@@ -1,0 +1,366 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  overflow-x: hidden;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+  min-height: 75vh;
+}
+
+.hero-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 740px;
+  aspect-ratio: 1 / 1;
+  z-index: 0;
+  opacity: 0.3;
+  background-image: url('../assets/yoga-hero2.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 40%;
+  -webkit-mask-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 1) 60%,
+    rgba(0, 0, 0, 0.6) 75%,
+    rgba(0, 0, 0, 0.2) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 1) 60%,
+    rgba(0, 0, 0, 0.6) 75%,
+    rgba(0, 0, 0, 0.2) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.hero > * {
+  z-index: 1;
+}
+
+.hero h1,
+.hero-heading {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #822e2e;
+  text-align: center;
+  margin-bottom: 35px;
+  margin-top: -30px;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 27px;
+  text-align: center;
+}
+
+.hero-subtext {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 600px;
+}
+
+.hero-subtext p,
+.hero-paragraph {
+  font-weight: 500;
+  color: #a14d4d;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.hero p {
+  font-weight: 545;
+  color: rgba(56, 55, 55, 0.889);
+  font-size: 19px;
+  text-align: center;
+}
+
+.hero .btn {
+  font-weight: 400;
+  color: rgba(229, 229, 229, 92%);
+  padding: 13px 30px;
+}
+
+.button-text {
+  margin-top: 40px;
+}
+
+section {
+  margin-top: 40px;
+}
+
+/* About Section */
+.about-syncate {
+  text-align: center;
+  padding: 34px 20px;
+  background-color: #edc5c54d;
+}
+
+.about-syncate h2 {
+  font-size: 2.7rem;
+  color: #822e2e;
+  margin-bottom: 20px;
+}
+
+.about-syncate p {
+  max-width: 770px;
+  margin: auto;
+  font-size: 1.2rem;
+  color: #5a4a4a;
+  line-height: 1.7;
+}
+
+/* Features Section */
+.syncate-features {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #f4bfbf5c;
+  margin-top: 50px;
+  padding: 50px 0;
+}
+
+.features-left {
+  flex: 1.3;
+  min-width: 250px;
+  background-color: #d64545af;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: -40px 40px;
+  height: 853px;
+}
+
+.features-right {
+  flex: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+  gap: 20px;
+}
+
+.feature-card {
+  background-color: #fffcfce0;
+  padding: 50px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 560px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.feature-card:hover {
+  background-color: #fff3f8a8;
+  transform: translateY(-8px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card h3 {
+  font-size: 1.6rem;
+  color: #822e2e;
+  margin-bottom: 12px;
+}
+
+.feature-card p {
+  font-size: 1rem;
+  color: #5a4a4a;
+  line-height: 1.5;
+}
+
+
+/* Vertical SYNCATE Text */
+.vertical-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1.1;
+  background: linear-gradient(145deg, #fff1f1, #ffc4ec, #ffe5f8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 12px rgba(255, 192, 203, 0.6), 0 0 20px rgba(152, 132, 132, 0.5);
+  letter-spacing: 2px;
+}
+
+.vertical-title span {
+  margin: 6px 0;
+}
+
+
+
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(242, 192, 192, 0.4); /* soft blush tint */
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+}
+
+#historyModal {
+  display: none;
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff5f7;
+  border-radius: 16px;
+  padding: 30px 25px;
+  box-shadow: 0 8px 24px rgba(175, 78, 78, 0.25);
+  z-index: 1001;
+  max-width: 360px;
+  width: 90%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 2px solid #f0b6c6;
+}
+
+#historyModal label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #822e2e;
+  font-size: 1rem;
+}
+
+#historyModal input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.8px solid #ed9ca9;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  background-color: #fffafa;
+  color: #7b1b3a;
+  outline-color: #f08080;
+}
+
+#historyModal input::placeholder {
+  color: #c78989;
+  font-style: italic;
+}
+
+#historyModal button {
+  cursor: pointer;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+#showHistoryBtn {
+  background-color: #d66a6a;
+  color: white;
+  margin-right: 12px;
+  box-shadow: 0 4px 12px rgba(221, 104, 104, 0.2);
+}
+
+#showHistoryBtn:hover {
+  background-color: #ba4f4f;
+  box-shadow: 0 6px 18px rgba(185, 67, 67, 0.3);
+  transform: translateY(-2px);
+}
+
+#startFreshBtn {
+  background-color: #fff1f1;
+  color: #b44b4b;
+  border: 1.5px solid #d18484;
+}
+
+#startFreshBtn:hover {
+  background-color: #f4d1d1;
+  color: #822e2e;
+  border-color: #a85757;
+  transform: translateY(-1px);
+}
+
+/* added to make those overlay buttons centered */
+#historyModal div {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+#historyModal p {
+  font-size: 1.1rem;
+  color: #822e2e;      
+  font-weight: 600;
+  margin-bottom: 25px;
+  text-align: center;
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 20px 15px;
+  }
+
+    #showHistoryBtn {
+      background-color: #d63384;
+      color: white;
+    }
+    #showHistoryBtn:hover {
+      background-color: #a0285f;
+    }
+    #startFreshBtn {
+      background-color: #f0f8ff;
+      color: #235b7c;
+      border: 1.5px solid #235b7c;
+    }
+    #startFreshBtn:hover {
+      background-color: #235b7c;
+      color: white;
+    }
+
+
+  
+   /* Modal tweaks */
+  #historyModal {
+    width: 95%;
+    padding: 20px 15px;
+  }
+
+  #historyModal input,
+  #historyModal button {
+    width: 100%;
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  #historyModal div {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #historyModal p {
+    font-size: 1rem;
+  }
+}

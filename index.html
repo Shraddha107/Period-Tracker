@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syncate</title>
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/styles-index.css" />
+  
+</head>
+
+<body>
+  <div class="header-placeholder"></div>
+  <script src="header_footer.js"></script>
+
+
+  <main class="hero">
+    <div class="hero-img"></div>
+
+    <div class="hero-text">
+      <h1 class="hero-heading">Track With Tenderness</h1>
+
+      <div class="hero-subtext-text">
+        <p class="hero-paragraph">
+          We help you more than just track dates.<br>
+          Welcome to your personal cycle companion.
+        </p>
+        
+      </div>
+
+      <div class="button-text">
+      <button id="startTrackingBtn" class="btn" 
+              title="Visited SheSyncs before? Click to tell us!">
+        Start Tracking
+      </button>
+    </div>
+
+    </div>
+ </main>
+    <!-- About Syncate Section -->
+<section class="about-syncate">
+  <h2>About Syncate</h2>
+  <p>
+    Syncate is your intelligent companion for menstrual health. Designed to empower users with knowledge and control, Syncate provides accurate period predictions, symptom tracking, and personalized insights into your monthly cycle.
+
+    Our mission is to simplify and support your health journey by offering intuitive tools, evidence-based suggestions, and product education — all in one safe, private, and user-friendly platform.
+
+
+  </p>
+</section>
+
+<!-- What Can Syncate Do Section -->
+<section class="syncate-features">
+  <div class="features-left">
+  <h1 class="vertical-title">
+    <span>S</span>
+    <span>Y</span>
+    <span>N</span>
+    <span>C</span>
+    <span>A</span>
+    <span>T</span>
+    <span>E</span>
+  </h1>
+  </div>
+
+
+  <div class="features-right">
+  <div class="feature-card">
+  <h3>Period Tracker</h3>
+  <p>Track your menstrual cycles with precision and ease. Stay on top of your symptoms, dates, and flow patterns — all in one place.</p>
+</div>
+
+<div class="feature-card">
+  <h3>Cycle Insights</h3>
+  <p>Gain a deeper understanding of your cycle phases, hormonal shifts, and how they impact your mood, energy, and wellbeing.</p>
+</div>
+
+<div class="feature-card">
+  <h3>Product Education</h3>
+  <p>Explore the pros and cons of tampons, pads, menstrual cups, and more — so you can choose what suits your lifestyle best.</p>
+</div>
+
+<div class="feature-card">
+  <h3>Smart Suggestions</h3>
+  <p>Receive tailored tips and guidance based on your unique patterns, preferences, and tracked symptoms — designed just for you.</p>
+</div>
+
+  </div>
+
+</section>
+
+  <div class="footer-placeholder"></div>
+  <script src="script.js"></script>
+
+
+<!-- Modal & Overlay -->
+<div id="overlay"></div>
+<div id="historyModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" style="display:none;">
+  <label for="firstName">First Name:</label>
+  <input id="firstName" type="text" placeholder="Enter first name" autocomplete="off" />
+
+  <label for="lastName">Last Name:</label>
+  <input id="lastName" type="text" placeholder="Enter last name" autocomplete="off" />
+
+  <label for="phoneNumber">Phone Number:</label>
+  <input id="phoneNumber" type="tel" placeholder="Enter phone number" autocomplete="off" />
+
+  <div>
+    <button id="showHistoryBtn">Yes, show my history</button>
+    <button id="startFreshBtn">No, start fresh</button>
+  </div>
+</div>
+
+<script>
+  const startBtn = document.getElementById('startTrackingBtn');
+  const modal = document.getElementById('historyModal');
+  const overlay = document.getElementById('overlay');
+  const showHistoryBtn = document.getElementById('showHistoryBtn');
+  const startFreshBtn = document.getElementById('startFreshBtn');
+  const firstNameInput = document.getElementById('firstName');
+  const lastNameInput = document.getElementById('lastName');
+  const phoneNumberInput = document.getElementById('phoneNumber');
+
+  // Show modal on button click
+  startBtn.addEventListener('click', () => {
+    modal.style.display = 'block';
+    overlay.style.display = 'block';
+    firstNameInput.focus();
+  });
+
+  // Close modal & overlay
+  function closeModal() {
+    modal.style.display = 'none';
+    overlay.style.display = 'none';
+    firstNameInput.value = '';
+    lastNameInput.value = '';
+    phoneNumberInput.value = '';
+  }
+  overlay.addEventListener('click', closeModal);
+
+  // Start fresh → redirect to input form
+  startFreshBtn.addEventListener('click', () => {
+    closeModal();
+    window.location.href = 'input.html';
+  });
+
+  // Show history → fetch from backend & redirect to history page
+  showHistoryBtn.addEventListener('click', async () => {
+    const firstName = firstNameInput.value.trim();
+    const lastName = lastNameInput.value.trim();
+    const phoneNumber = phoneNumberInput.value.trim();
+
+    if (!firstName || !lastName || !phoneNumber) {
+      alert('Fill all: first name, last name, and phone number!');
+      if (!firstName) firstNameInput.focus();
+      else if (!lastName) lastNameInput.focus();
+      else phoneNumberInput.focus();
+      return;
+    }
+
+    const fullName = `${firstName} ${lastName}`;
+
+    try {
+      Swal.fire({
+        title: 'Checking history...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      const response = await fetch(`http://localhost:8000/history/${encodeURIComponent(phoneNumber)}`);
+
+      Swal.close();
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('userName', fullName);
+        localStorage.setItem('userPhone', phoneNumber);
+        localStorage.setItem('predictions', JSON.stringify(data));
+
+        closeModal();
+        setTimeout(() => window.location.href = 'history.html', 300);
+
+      } else if (response.status === 404) {
+        if (confirm('No history found. Start tracking now?')) {
+          closeModal();
+          window.location.href = 'input.html';
+        }
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      Swal.close();
+      alert('Connection error. Check your internet and try again.');
+      console.error(error);
+    }
+  });
+
+  // Enter key support for inputs
+  firstNameInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') lastNameInput.focus();
+  });
+
+  lastNameInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') phoneNumberInput.focus();
+  });
+
+  phoneNumberInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') showHistoryBtn.click();
+  });
+  </script>
+</body>
+</html>

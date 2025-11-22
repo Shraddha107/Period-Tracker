@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SheSyncs - Period Survey</title>
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/styles-suggestions.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="header-placeholder"></div>
+    <script src="header_footer.js"></script>
+  
+<!-- Toggle Navigation -->
+    <div class="toggle-slider-container">
+  <div class="toggle-slider-bg"></div>
+  <button class="toggle-btn active" data-section="survey">Survey & Tips</button>
+  <button class="toggle-btn" data-section="myths">Myths & Remedies</button>
+</div>
+
+    <!-- Survey & Tips Section -->
+  <div id="surveySection" class="toggle-section active">
+  <main class="survey-main">
+    <h2>Tell Us How You're Feeling</h2>
+    <form id="surveyForm">
+      <label>
+        How bad are your cramps?
+        <select name="cramps" required>
+          <option value="" disabled selected>Select severity</option>
+          <option value="none">None</option>
+          <option value="mild">Mild</option>
+          <option value="moderate">Moderate</option>
+          <option value="severe">Severe</option>
+        </select>
+      </label>
+
+      <label>
+        Do you experience acne during your period?
+        <select name="acne" required>
+          <option value="" disabled selected>Select one</option>
+          <option value="no">No</option>
+          <option value="sometimes">Sometimes</option>
+          <option value="yes">Yes</option>
+        </select>
+      </label>
+
+      <label>
+        Do you feel bloated?
+        <select name="bloating" required>
+          <option value="" disabled selected>Select one</option>
+          <option value="no">No</option>
+          <option value="sometimes">Sometimes</option>
+          <option value="yes">Yes</option>
+        </select>
+      </label>
+
+      <label>
+        Mood swings intensity?
+        <select name="mood" required>
+          <option value="" disabled selected>Select intensity</option>
+          <option value="none">None</option>
+          <option value="mild">Mild</option>
+          <option value="moderate">Moderate</option>
+          <option value="extreme">Extreme</option>
+        </select>
+      </label>
+
+      <label>
+        Flow intensity?
+        <select name="flow" required>
+          <option value="" disabled selected>Select flow</option>
+          <option value="light">Light</option>
+          <option value="normal">Normal</option>
+          <option value="heavy">Heavy</option>
+          <option value="very heavy">Very Heavy</option>
+        </select>
+      </label>
+
+      <button type="submit" class="btn">Get Suggestions</button>
+    </form>
+
+    <section id="suggestions" class="suggestions-box" hidden>
+      <h3>Your Personalized Tips:</h3>
+      <ul id="suggestionsList"></ul>
+    </section>
+  </main>
+  </div>
+
+
+  <!-- Myths & Remedies Section -->
+<div id="mythsSection" class="toggle-section">
+    <section class="myth-buster">
+      <h3>Period Myths vs Facts (Nepal Edition)</h3>
+      <div class="myth-carousel">
+        <div class="myth-card active">
+          <p><strong>Myth:</strong> You shouldn't enter the kitchen during your period.</p>
+          <p><strong>Fact:</strong> Menstruation doesn't make you impure and foods keep your inner devils away from acting up.</p>
+        </div>
+        <div class="myth-card">
+          <p><strong>Myth:</strong> You can't plant seeds or touch pickles during periods.</p>
+          <p><strong>Fact:</strong> Periods don't kill pickles. Misogyny does.</p>
+        </div>
+        <div class="myth-card">
+          <p><strong>Myth:</strong> Periods are a curse or punishment.</p>
+          <p><strong>Fact:</strong> It's biology.</p>
+        </div>
+      </div>
+      <div class="myth-controls">
+        <button id="prevMyth"> < </button>
+        <button id="nextMyth"> > </button>
+      </div>
+    </section>
+
+    <section class="remedy-zone">
+      <h3>Period Pain Relief – Nepali Style</h3>
+      <ul>
+        <li><strong>Ginger Tea:</strong> Boil ginger + tulsi + honey = very useful for cramps & bloating</li>
+        <li><strong>Methi Water:</strong> Soak overnight, drink in the morning - ancient cure</li>
+        <li><strong>Warm Mustard Oil Massage:</strong> Belly/back rubs = very cozy </li>
+        <li><strong>Hot Water Bag:</strong> Classic. Trust the heat gods.</li>
+      </ul>
+    </section>
+</div>
+
+  <!-- <footer>
+    <div class="footer-content">
+      <p>SheSyncs@gmail.com</p>
+      <p>SheSyncs &copy; 2025</p>
+    </div>
+  </footer> -->
+  <script src="script.js"></script>
+
+  <!-- Footer placeholder -->
+  <div class="footer-placeholder"></div>
+
+  <script src="suggestions.js"></script>
+</body>
+</html>

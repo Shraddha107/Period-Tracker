@@ -1,0 +1,202 @@
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* exactly 2 per row */
+  gap: 2.5rem;
+  margin-bottom: 4rem;
+  max-width: 1150px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
+}
+
+.product-card {
+  background: #fff7f8;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 308px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.251);
+}
+
+.product-image {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background: #fff7f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 0 12px rgba(48, 48, 49, 0.327);
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.product-image img {
+  max-width: 60px;
+  max-height: 60px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+/* .product-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+  color: #4b2787;
+}
+
+.product-subtitle {
+  font-size: 1rem;
+  color: #6c3483;
+  margin-bottom: 1rem;
+  font-weight: 600;
+} */
+
+/* Info panel styling */
+.info-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.96);
+  padding: 1.2rem;
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  overflow-y: auto;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(20px);
+  font-family: 'Nunito', sans-serif;
+  color: #2d2d2d;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.info-panel:hover {
+  background-color: #ffe4e4;
+}
+.product-card:hover .info-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.info-panel p {
+  font-family: 'Nunito', serif;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  justify-content: center;
+  align-items: center;
+  color: #444;
+  margin-top: 3rem;
+  margin-left: 1.5rem;
+  margin-right: 1rem;
+}
+
+
+.learn-more-link {
+  margin-top: 0.2rem;
+  margin-bottom: 2rem;
+  margin-left: 1.5rem;
+  display: inline-block;
+  font-weight: 700;
+  color: #f16060;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.learn-more-link:hover {
+  color: #a22964f5;
+}
+
+/* Product card colors */
+.pad .product-image {
+  background: linear-gradient(135deg, #ffd1dc, #ffc0cb);
+}
+
+.tampon .product-image {
+  background: linear-gradient(135deg, #e6e6fa, #dda0dd);
+}
+
+.cup .product-image {
+  background: linear-gradient(135deg, #98fb98, #90ee90);
+}
+
+.pantyliner .product-image {
+  background: linear-gradient(135deg, #ffe4b5, #f0e68c);
+}
+
+/* Center the title and subtitle */
+.page-title{
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 675px;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  color: #822e2e;
+  font-weight: 650;
+  font-size: 2.5rem;
+}
+
+
+.page-subtitle {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 680px;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #822e2e;
+  font-weight: 540;
+  padding-top: 0.5%;
+  padding-bottom: 2%;
+  font-size: large;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    height: auto;
+    padding: 1rem;
+  }
+
+  .product-image {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 600px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+}

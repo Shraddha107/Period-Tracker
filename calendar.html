@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SheSyncs Insights</title>
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/styles-calendar.css" />
+  <style>
+    /* ✅ NEW: Style for edit button */
+    .calendar-date {
+      position: relative;
+      text-align: center;
+    }
+
+    .calendar-date .edit-btn {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #f44336;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 0.7rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 5;
+    }
+
+    .calendar-date.first-red:hover .edit-btn {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="header-placeholder"></div>
+    <script src="header_footer.js"></script>
+
+
+    <main class="main-content">
+      <div class="insights-heading">CYCLE OVERVIEW</div>
+      <div class="insights-container" id="monthsGrid"></div>
+
+      <div class="legend-box">
+        <div class="legend-title">Cycle Key</div>
+        <div class="legend-item"><span class="color-box red"></span> Menstruation Phase</div>
+        <div class="legend-item"><span class="color-box pink"></span> Follicular Phase</div>
+        <div class="legend-item"><span class="color-box pastel"></span> Ovulation Phase</div>
+        <div class="legend-item"><span class="color-box blueish"></span> Luteal Phase</div>
+      </div>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <button id="backToHistoryBtn" style="
+          padding: 19px 39px;
+          background-color: #dd6767fc;
+          color: white;
+          border: none;
+          border-radius: 25px;
+          cursor: pointer;
+          font-size: 1.2rem;
+          box-shadow: 0 3px 6px #6d4c4196;
+          transition: background-color 0.3s ease;
+          user-select: none;
+          margin-bottom: 4% ;
+          margin-top: 0%;
+          cursor: pointer;
+        ">
+          Dashboard
+        </button>
+      </div>
+    </main>
+
+    <div class="footer-placeholder"></div>
+    <script src="script.js"></script>
+
+    <script>
+      const monthsGrid = document.getElementById("monthsGrid");
+      const today = new Date();
+      const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      async function loadCalendarPredictionsForMonth(year, month) {
+    try {
+      const userPhone = localStorage.getItem('userPhone') || '0000000000';
+      const res = await fetch(`http://localhost:8000/history/${encodeURIComponent(userPhone)}`);
+      if (!res.ok) throw new Error('Failed to fetch calendar predictions');
+      const predictions = await res.json();
+      const phaseMap = markPhases(predictions);
+      renderMonthsGrid(year, month, phaseMap, predictions);
+    } catch (err) {
+      console.error(err);
+      monthsGrid.innerHTML = '<p style="text-align:center;color:#b4465a;">Failed to load calendar data.</p>';
+    }
+  }
+
+
+      function markPhases(predictions) {
+        const phaseDates = {};
+        if (!Array.isArray(predictions)) return phaseDates;
+
+        predictions.forEach(prediction => {
+          const {
+            predicted_start_date, ovulation_date, luteal_phase_start, luteal_phase_end,
+            period_start, period_end
+          } = prediction;
+
+          const dateify = str => new Date(str);
+          let d;
+
+          d = dateify(period_start);
+          const end = dateify(period_end);
+          while (d <= end) {
+            phaseDates[d.toDateString()] = "red";
+            d.setDate(d.getDate() + 1);
+          }
+
+          phaseDates[dateify(predicted_start_date).toDateString()] = "red";
+          phaseDates[dateify(ovulation_date).toDateString()] = "pastel";
+
+          d = dateify(luteal_phase_start);
+          const lutealEnd = dateify(luteal_phase_end);
+          while (d <= lutealEnd) {
+            phaseDates[d.toDateString()] = "blueish";
+            d.setDate(d.getDate() + 1);
+          }
+
+          const follicularStart = new Date(dateify(period_end));
+          follicularStart.setDate(follicularStart.getDate() + 1);
+          const follicularEnd = dateify(ovulation_date);
+          follicularEnd.setDate(follicularEnd.getDate() - 1);
+          d = new Date(follicularStart);
+          while (d <= follicularEnd) {
+            const key = d.toDateString();
+            if (!phaseDates[key]) phaseDates[key] = "pink";
+            d.setDate(d.getDate() + 1);
+          }
+        });
+
+        return phaseDates;
+      }
+
+      function generateCalendar(month, year, phaseMap, predictions) {
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const dayOffset = firstDay === 0 ? 6 : firstDay - 1;
+
+  let html = '<div class="calendar-header">';
+  html += `<button class="nav-btn prev-btn" data-month="${month}" data-year="${year}">&lt;</button>`;
+  html += `<h2>${monthNames[month]} ${year}</h2>`;
+  html += `<button class="nav-btn next-btn" data-month="${month}" data-year="${year}">&gt;</button>`;
+  html += '</div>';
+
+  html += '<div class="calendar">';
+  html += '<div class="calendar-days">';
+  html += '<div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>';
+  html += '</div><div class="calendar-dates">';
+
+  for (let i = 0; i < dayOffset; i++) {
+    html += `<div class="calendar-date empty"></div>`;
+  }
+
+  for (let date = 1; date <= daysInMonth; date++) {
+    const currentDateObj = new Date(year, month, date);
+    const currentDateStr = currentDateObj.toDateString();
+
+    // Color class for this date
+    const colorClass = phaseMap[currentDateStr] ? `phase-${phaseMap[currentDateStr]}` : "";
+
+    // Determine if this date is the first day of a red block:
+    // 1. Current date is red
+    // 2. Previous date is NOT red or does not exist (start of month)
+    let isFirstRed = false;
+    if (phaseMap[currentDateStr] === "red") {
+      const prevDateObj = new Date(year, month, date - 1);
+      const prevDateStr = prevDateObj.toDateString();
+      if (date === 1 || phaseMap[prevDateStr] !== "red") {
+        isFirstRed = true;
+      }
+    }
+
+    const isToday = (date === today.getDate() && month === today.getMonth() && year === today.getFullYear());
+
+    html += `<div class="calendar-date ${colorClass} ${isFirstRed ? "first-red" : ""} ${isToday ? "today" : ""}">
+      ${date}
+      ${isFirstRed ? `<button class="edit-btn" title="Edit last period date" 
+      style="position:absolute; 
+      top: 1px;
+      right: -36px;
+      font-size: 1.2em;
+      padding: 11px 1px;
+      cursor: pointer;
+      background: #f44336;
+      color: #fff;
+      border: none;
+      border-radius: 10px;">
+        Edit
+    </button>
+    ` : ""}
+    </div>`;
+  }
+
+  html += '</div></div>';
+  return html;
+}
+
+
+      function renderMonthsGrid(startYear, startMonth, phaseMap, predictions) {
+        monthsGrid.innerHTML = "";
+        let curYear = startYear;
+        let curMonth = startMonth;
+
+        for (let i = 0; i < 12; i++) {
+          const monthBlock = document.createElement("div");
+          monthBlock.classList.add("month-block");
+          monthBlock.dataset.year = curYear;
+          monthBlock.dataset.month = curMonth;
+          monthBlock.innerHTML = generateCalendar(curMonth, curYear, phaseMap, predictions);
+          monthsGrid.appendChild(monthBlock);
+
+          curMonth++;
+          if (curMonth > 11) {
+            curMonth = 0;
+            curYear++;
+          }
+        }
+      }
+
+      monthsGrid.addEventListener("click", async (e) => {
+        if (e.target.classList.contains("nav-btn")) {
+          const btn = e.target;
+          let month = parseInt(btn.dataset.month);
+          let year = parseInt(btn.dataset.year);
+
+          if (btn.classList.contains("prev-btn")) {
+            month--;
+            if (month < 0) {
+              month = 11;
+              year--;
+            }
+          } else if (btn.classList.contains("next-btn")) {
+            month++;
+            if (month > 11) {
+              month = 0;
+              year++;
+            }
+          }
+          loadCalendarPredictionsForMonth(year, month);
+          return;
+        }
+
+        if (e.target.classList.contains("edit-btn")) {
+          const dateDiv = e.target.parentElement;
+          if (dateDiv.querySelector('input')) return;
+
+          const dateText = dateDiv.firstChild.textContent.trim();
+          const monthBlock = dateDiv.closest('.month-block');
+          const year = parseInt(monthBlock.dataset.year);
+          const month = parseInt(monthBlock.dataset.month);
+          const day = parseInt(dateText);
+
+          const isoDate = new Date(year, month, day).toISOString().substring(0, 10);
+
+          dateDiv.innerHTML = `
+            <input type="date" id="editDateInput" max="${isoDate}" value="${isoDate}" style="width:130px; font-size:0.85em;" />
+            <button id="saveEditBtn" style="font-size:0.8em;">Save</button>
+            <button id="cancelEditBtn" style="font-size:0.8em;">Cancel</button>
+          `;
+
+          const dateInput = dateDiv.querySelector('#editDateInput');
+          const todayStr = new Date().toISOString().split('T')[0];
+          dateInput.setAttribute('max', todayStr);
+
+          dateDiv.querySelector('#saveEditBtn').addEventListener('click', async () => {
+            const newDate = dateInput.value;
+            if (!newDate) {
+              alert("Pick a date first!");
+              return;
+            }
+
+            if (new Date(newDate) > new Date()) {
+              alert("Can't pick a date in the future.");
+              return;
+            }
+
+            const userPhone = localStorage.getItem('userPhone') || '0000000000';
+
+        try {
+          const patchRes = await fetch(`http://localhost:8000/update-last-period/${encodeURIComponent(userPhone)}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newDate)
+              });
+              if (!patchRes.ok) throw new Error("Failed to update last period date");
+
+              loadCalendarPredictionsForMonth(today.getFullYear(), today.getMonth());
+              alert("Last period date updated successfully!!!.");
+            } catch (err) {
+              console.error(err);
+              alert("Couldn't update your last period date. Try again.");
+            }
+          });
+
+          dateDiv.querySelector('#cancelEditBtn').addEventListener('click', () => {
+            loadCalendarPredictionsForMonth(today.getFullYear(), today.getMonth());
+          });
+        }
+      });
+
+      loadCalendarPredictionsForMonth(today.getFullYear(), today.getMonth());
+
+      document.getElementById("backToHistoryBtn").addEventListener("click", () => {
+        window.location.href = "history.html"; 
+      });
+    </script>
+</body>
+</html>
